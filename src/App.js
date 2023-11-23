@@ -1,9 +1,9 @@
-import RegForm from "./components/registration-form/RegForm";
 import "./App.css";
+import RegFormPage from "./components/registration-form/RegFormPage";
 function App() {
   return (
     <>
-      <RegForm />
+      <RegFormPage />
     </>
   );
 }

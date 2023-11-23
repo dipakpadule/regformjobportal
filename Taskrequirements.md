@@ -18,3 +18,20 @@ rightpan
 
 form wrapper
 ---<form> </form>
+
+## main box padding and margin and gap
+
+<Box
+sx={{
+          display: "flex",
+          gap: 5,
+          mt: 5,
+        }} >
+<Box sx={{ maxWidth: 300 }}>
+<StickyCard />
+</Box>
+
+        <Box>
+          <Footerr />
+        </Box>
+      </Box>
