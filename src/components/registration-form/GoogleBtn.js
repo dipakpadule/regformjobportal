@@ -11,7 +11,7 @@ const GoogleBtn = () => {
       </Typography>
       <Button
         variant="outlined"
-        sx={{ textTransform: "capitalize", mt: 0.5 }}
+        sx={{ textTransform: "capitalize", mt: 0.5, borderRadius: 5 }}
         startIcon={<GoogleIcon sx={{ color: "red" }} />}
       >
         Google

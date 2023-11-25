@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,11 +15,13 @@ import CardContent from "@mui/material/CardContent";
 
 import * as yup from "yup";
 import { Formik } from "formik";
+import { CardActionArea } from "@mui/material";
 const userSchema = yup.object().shape({
   name: yup
     .string()
     .required("name is required")
     .min(3, "name must be at least 3 chars"),
+  city: yup.string().min(4, "at least 4 chars"),
   email: yup.string().email("enter valid email").required("email is required"),
   password: yup
     .string()
@@ -33,6 +34,8 @@ const userSchema = yup.object().shape({
 });
 
 const MainForm = () => {
+  const [isFresher, setIsFresher] = useState(false);
+  const [isExp, setIsExp] = useState(true);
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h5" sx={{ mb: 3, mt: 2 }}>
@@ -44,7 +47,11 @@ const MainForm = () => {
           email: "",
           password: "",
           mobile: "",
+          city: "",
           whatsapp: false,
+          isFresher: false,
+          isExp: true,
+          file: "",
         }}
         validationSchema={userSchema}
         onSubmit={(values) => {
@@ -118,7 +125,7 @@ const MainForm = () => {
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
-                <Typography htmlFor="mobile" sx={{ fontWeight: "bold" }}>
+                <Typography sx={{ fontWeight: "bold" }}>
                   Mobile number
                 </Typography>
                 <TextField
@@ -136,7 +143,7 @@ const MainForm = () => {
                 ></TextField>
               </Grid>
               {/* Work Status */}
-              <Grid item>
+              <Grid item xs={12}>
                 <Typography
                   htmlFor="workstatus"
                   sx={{ fontWeight: "bold", mb: 1 }}
@@ -147,38 +154,93 @@ const MainForm = () => {
                   <Card
                     sx={{
                       minWidth: 320,
-                      border: "1px solid black",
+                      border:
+                        isExp === true ? "1px solid black" : "1px solid #fff",
                       borderRadius: 5,
                     }}
                   >
-                    <CardContent>
-                      <Typography variant="h6" sx={{ fontSize: 15 }}>
-                        I'm Experienced
-                      </Typography>
-                      <Typography variant="body2">
-                        I have work experience (excluding internships)
-                      </Typography>
-                    </CardContent>
+                    <CardActionArea
+                      onClick={() => {
+                        values.isExp = true;
+                        values.isFresher = false;
+                        setIsExp(true);
+                        setIsFresher(false);
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6" sx={{ fontSize: 15 }}>
+                          I'm Experienced
+                        </Typography>
+                        <Typography variant="body2">
+                          I have work experience (excluding internships)
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
                   </Card>
                   <Card
                     sx={{
                       minWidth: 320,
-                      border: "1px solid #fff",
+                      border:
+                        isFresher === true
+                          ? "1px solid black"
+                          : "1px solid #fff",
                       borderRadius: 5,
                     }}
                   >
-                    <CardContent>
-                      <Typography variant="h6" sx={{ fontSize: 15 }}>
-                        I'm a Fresher
-                      </Typography>
-                      <Typography variant="body2">
-                        I am a student/ Haven't worked after graduation
-                      </Typography>
-                    </CardContent>
+                    <CardActionArea
+                      onClick={() => {
+                        values.isFresher = true;
+                        values.isExp = false;
+                        setIsFresher(true);
+                        setIsExp(false);
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6" sx={{ fontSize: 15 }}>
+                          I'm a Fresher
+                        </Typography>
+                        <Typography variant="body2">
+                          I am a student/ Haven't worked after graduation
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
                   </Card>
                 </Box>
               </Grid>
+              <Grid
+                item
+                xs={12}
+                sx={{ display: isExp === true ? "block" : "none" }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>Resume</Typography>
+                <TextField
+                  type="file"
+                  accept=".doc,.docx,.pdf"
+                  name="resume"
+                  style={{ color: "red" }}
+                  onChange={handleChange}
+                ></TextField>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sx={{ display: isFresher === true ? "block" : "none" }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>City</Typography>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Enter your city"
+                  value={values.city}
+                  type="text"
+                  name="city"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  sx={{ mt: 1 }}
+                ></TextField>
+              </Grid>
             </Grid>
+            {/* whatsapp */}
             <Grid item sx={{ display: "flex", alignItems: "center" }}>
               <FormControlLabel
                 control={
@@ -205,13 +267,17 @@ const MainForm = () => {
                 <Typography> WhatsApp</Typography>
               </Link>
             </Grid>
-
-            <Grid item>
+            {/* register button */}
+            <Grid item xs={12}>
               <Typography sx={{ mt: 2 }}>
                 By clicking Register, you agree to the Terms and Conditions &
                 Privacy of ToppersSkill.com
               </Typography>
-              <Button variant="contained" type="submit" sx={{ mt: 3 }}>
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ mt: 3, borderRadius: 5 }}
+              >
                 Register Now
               </Button>
             </Grid>
