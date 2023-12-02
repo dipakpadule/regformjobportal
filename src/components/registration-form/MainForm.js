@@ -51,7 +51,6 @@ const MainForm = () => {
           whatsapp: false,
           isFresher: false,
           isExp: true,
-          file: "",
         }}
         validationSchema={userSchema}
         onSubmit={(values) => {
